@@ -52,6 +52,19 @@ export const createApp = () => {
   // Static uploads serving
   app.use('/uploads', express.static(config.uploadDir));
 
+  // Root welcome & service info endpoint
+  app.get('/', (req, res) => {
+    res.json({
+      status: 'online',
+      app: 'RELEASETRACK API Server',
+      tagline: 'Live. Test. Monitor.',
+      version: '1.0.0',
+      health: '/api/health',
+      message: 'RELEASETRACK REST API is active and operational.',
+      timestamp: new Date().toISOString(),
+    });
+  });
+
   // Health check
   app.get('/api/health', (req, res) => {
     res.json({
