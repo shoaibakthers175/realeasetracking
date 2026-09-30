@@ -149,3 +149,5 @@ npm run build
 - [x] **Excel (.xlsx) and CSV Report Exports**
 - [x] **Dark / Light Theme Switcher** with localStorage persistence
 - [x] **Tamper-Evident Audit Logs**
+- [x] **Admin Approval Workflow for Password Resets**
+- [x] **Render & Cloud-Ready Deployment Configuration**
