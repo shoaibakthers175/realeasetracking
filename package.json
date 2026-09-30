@@ -1,0 +1,19 @@
+{
+  "name": "releasetrack-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RELEASETRACK - Enterprise QA and Multi-University Release Tracking Application",
+  "scripts": {
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "build": "cd server && npm run build && cd ../client && npm run build",
+    "test": "cd server && npm run test && cd ../client && npm run test",
+    "seed": "cd server && npm run seed",
+    "clean": "cd server && npm run clean"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

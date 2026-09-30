@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --brand-primary: #e62e3d;
+    --brand-hover: #cf2231;
+    --brand-glow: rgba(230, 46, 61, 0.2);
+  }
+
+  body {
+    @apply font-sans m-0 p-0 overflow-x-hidden;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Custom subtle scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: #252e40;
+    border-radius: 9999px;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #333f57;
+  }
+
+  .light ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+  }
+
+  .light ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+}
+
+@layer utilities {
+  /* Wave overlays */
+  .ambient-waves-dark {
+    background-image: 
+      radial-gradient(circle at 90% 10%, rgba(230, 46, 61, 0.14) 0%, transparent 45%),
+      radial-gradient(circle at 10% 90%, rgba(230, 46, 61, 0.08) 0%, transparent 40%);
+  }
+
+  .ambient-waves-light {
+    background-image: 
+      radial-gradient(circle at 90% 10%, rgba(230, 46, 61, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 10% 90%, rgba(230, 46, 61, 0.04) 0%, transparent 45%);
+  }
+
+  /* Glass card dark */
+  .glass-card-dark {
+    background-color: #121620;
+    border: 1px solid #1c2333;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Glass card light */
+  .glass-card-light {
+    background-color: #ffffff;
+    border: 1px solid #edf2f7;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Red glow border */
+  .glow-border {
+    box-shadow: 0 0 0 1px rgba(230, 46, 61, 0.4), 0 0 16px rgba(230, 46, 61, 0.15);
+  }
+
+  /* Active Sidebar Item */
+  .active-nav-dark {
+    background: linear-gradient(90deg, rgba(230, 46, 61, 0.18) 0%, rgba(230, 46, 61, 0.04) 100%);
+    border-left: 3px solid #e62e3d;
+    color: #ffffff;
+  }
+
+  .active-nav-light {
+    background: linear-gradient(90deg, rgba(230, 46, 61, 0.12) 0%, rgba(230, 46, 61, 0.02) 100%);
+    border-left: 3px solid #e62e3d;
+    color: #e62e3d;
+  }
+}
