@@ -38,4 +38,3 @@ services:
           type: web
           name: releasetrack-server
           property: host
-        value: https://${releasetrack-server.host}/api

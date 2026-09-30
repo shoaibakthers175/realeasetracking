@@ -1,7 +1,19 @@
 import axios, { AxiosError } from 'axios';
 
+const getBaseUrl = (): string => {
+  let url = (import.meta.env.VITE_API_URL || '').trim();
+  if (!url || url === '/api') return '/api';
+  if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('/')) {
+    url = `https://${url}`;
+  }
+  if (!url.endsWith('/api')) {
+    url = `${url.replace(/\/+$/, '')}/api`;
+  }
+  return url;
+};
+
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: getBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
