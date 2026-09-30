@@ -18,10 +18,10 @@ const startServer = async () => {
 
     // 3. Start Express Server
     const app = createApp();
-    const server = app.listen(config.port, () => {
+    const server = app.listen(config.port, '0.0.0.0', () => {
       console.log('====================================================');
       console.log(`🚀 RELEASETRACK API Server is running!`);
-      console.log(`📡 URL: http://localhost:${config.port}`);
+      console.log(`📡 URL: http://0.0.0.0:${config.port}`);
       console.log(`🛡️  Environment: ${config.nodeEnv}`);
       console.log(`📦 MongoDB: ${config.mongoUri}`);
       console.log('====================================================');
