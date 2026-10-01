@@ -2,7 +2,13 @@ import axios, { AxiosError } from 'axios';
 
 const getBaseUrl = (): string => {
   let url = (import.meta.env.VITE_API_URL || '').trim();
-  if (!url || url === '/api') return '/api';
+  if (!url) {
+    if (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')) {
+      return 'https://releasetrack-server.onrender.com/api';
+    }
+    return '/api';
+  }
+  if (url === '/api') return '/api';
   if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('/')) {
     url = `https://${url}`;
   }
