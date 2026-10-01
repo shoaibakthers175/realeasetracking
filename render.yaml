@@ -35,8 +35,5 @@ services:
       - key: PORT
         value: 10000
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: releasetrack-server
-          property: host
+        value: https://releasetrack-server.onrender.com
 
