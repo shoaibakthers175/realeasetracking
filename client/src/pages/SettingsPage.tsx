@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useNotification } from '../context/NotificationContext';
-import { authApi, dashboardApi } from '../api/endpoints';
+import { authApi } from '../api/endpoints';
 import { Button } from '../components/common/Button';
-import { Settings, User, Lock, Moon, Sun, Bell, Shield } from 'lucide-react';
+import { Settings, User, Lock, Moon, Sun, Bell } from 'lucide-react';
 
 export const SettingsPage: React.FC = () => {
   const { user } = useAuth();
@@ -201,56 +201,6 @@ export const SettingsPage: React.FC = () => {
             Update Password
           </Button>
         </form>
-      </div>
-
-      {/* Database & Demo Data Management */}
-      <div className="p-6 rounded-2xl bg-white dark:bg-dark-surface border border-slate-200/80 dark:border-dark-border shadow-sm space-y-4">
-        <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <Shield className="w-4 h-4 text-brand-primary" /> Database & Demo Data Management
-        </h3>
-        <p className="text-xs text-slate-500 dark:text-dark-muted">
-          Manage operational release logs, test leads, sanity sign-offs, and bug tickets. Master users, universities, and features are safely preserved.
-        </p>
-
-        <div className="flex flex-wrap items-center gap-3 pt-2">
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={async () => {
-              if (window.confirm('Are you sure you want to clean all demo releases, bugs, sanity reports, and leads?')) {
-                try {
-                  const res = await dashboardApi.cleanDemoData();
-                  if (res.success) {
-                    showToast({ type: 'success', title: 'Data Cleaned', message: 'All demo operational records have been removed.' });
-                  }
-                } catch (err: any) {
-                  showToast({ type: 'error', title: 'Error', message: err.message });
-                }
-              }
-            }}
-          >
-            Clean All Demo Data
-          </Button>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={async () => {
-              if (window.confirm('Re-seed initial demo dataset with releases, bug tickets, and sanity reports?')) {
-                try {
-                  const res = await dashboardApi.resetDemoData();
-                  if (res.success) {
-                    showToast({ type: 'success', title: 'Database Reset', message: 'Demo dataset re-seeded successfully.' });
-                  }
-                } catch (err: any) {
-                  showToast({ type: 'error', title: 'Error', message: err.message });
-                }
-              }
-            }}
-          >
-            Re-seed Demo Data
-          </Button>
-        </div>
       </div>
     </div>
   );

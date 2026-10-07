@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "seed": "ts-node src/seed/seed.ts",
+    "sync-unis": "ts-node src/seed/syncUniversities.ts",
     "clean": "ts-node src/seed/clean.ts",
     "test": "vitest run"
   },

@@ -62,14 +62,6 @@ export const dashboardApi = {
     const res = await apiClient.get<ApiResponse<DashboardData>>('/dashboard', { params });
     return res.data;
   },
-  cleanDemoData: async () => {
-    const res = await apiClient.post<ApiResponse<any>>('/dashboard/clean-demo-data');
-    return res.data;
-  },
-  resetDemoData: async () => {
-    const res = await apiClient.post<ApiResponse<any>>('/dashboard/reset-demo-data');
-    return res.data;
-  },
 };
 
 export const universitiesApi = {

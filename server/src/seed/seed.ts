@@ -67,26 +67,27 @@ export const seedDatabase = async () => {
   const defaultUser = users[0];
   console.log(`[Seed] Seeded ${users.length} users`);
 
-  // 2. Create 18 Universities
+  // 2. Create 19 Universities
   const universityData = [
-    { name: 'Indian Institute of Technology Kharagpur', code: 'IITKGP', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://erp.iitkgp.ac.in', stagingUrl: 'https://staging.iitkgp.ac.in', location: 'Kharagpur, WB', notes: 'Premier technical institute' },
-    { name: 'Atlas SkillTech University', code: 'ATLAS', type: 'MULTI_TENANT', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://portal.atlasuniversity.edu.in', stagingUrl: 'https://staging.atlasuniversity.edu.in', location: 'Mumbai, MH', notes: 'Urban multidisciplinary university' },
-    { name: 'Bharathidasan University', code: 'BDU', type: 'MULTI_TENANT', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://admissions.bdu.ac.in', stagingUrl: 'https://staging.bdu.ac.in', location: 'Tiruchirappalli, TN', notes: 'State University' },
-    { name: 'Chandigarh University', code: 'CU', type: 'MULTI_TENANT', primaryEnvironment: 'STAGING', productionUrl: 'https://cuchd.in', stagingUrl: 'https://staging-portal.cuchd.in', location: 'Mohali, PB', notes: 'High volume admissions' },
-    { name: 'Dr. D.Y. Patil Vidyapeeth', code: 'DYP', type: 'MULTI_TENANT', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://dypatil.edu.in', stagingUrl: 'https://staging.dypatil.edu.in', location: 'Pune, MH', notes: 'Medical and engineering university' },
-    { name: 'BITS Pilani', code: 'BITS', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://bits-pilani.ac.in', stagingUrl: 'https://staging.bits-pilani.ac.in', location: 'Pilani, RJ', notes: 'Private institute of eminence' },
-    { name: 'Vellore Institute of Technology', code: 'VIT', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://vit.ac.in', stagingUrl: 'https://staging.vit.ac.in', location: 'Vellore, TN', notes: 'Top ranked private engineering institution' },
-    { name: 'SRM Institute of Science & Technology', code: 'SRM', type: 'MULTI_TENANT', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://srmist.edu.in', stagingUrl: 'https://staging.srmist.edu.in', location: 'Chennai, TN', notes: 'Multi-campus university' },
-    { name: 'Manipal Academy of Higher Education', code: 'MANIPAL', type: 'MULTI_TENANT', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://manipal.edu', stagingUrl: 'https://staging.manipal.edu', location: 'Manipal, KA', notes: 'Healthcare and tech leader' },
-    { name: 'Amity University Online', code: 'AMITY', type: 'MULTI_TENANT', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://amityonline.com', stagingUrl: 'https://staging.amityonline.com', location: 'Noida, UP', notes: 'Online and distance degree provider' },
-    { name: 'Thapar Institute of Engineering & Technology', code: 'THAPAR', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://thapar.edu', stagingUrl: 'https://staging.thapar.edu', location: 'Patiala, PB', notes: 'Engineering research hub' },
-    { name: 'Symbiosis International University', code: 'SYMBIOSIS', type: 'MULTI_TENANT', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://siu.edu.in', stagingUrl: 'https://staging.siu.edu.in', location: 'Pune, MH', notes: 'Management & Law leader' },
-    { name: 'NMIMS University', code: 'NMIMS', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://nmims.edu', stagingUrl: 'https://staging.nmims.edu', location: 'Mumbai, MH', notes: 'Business and commerce institute' },
-    { name: 'Ashoka University', code: 'ASHOKA', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://ashoka.edu.in', stagingUrl: 'https://staging.ashoka.edu.in', location: 'Sonipat, HR', notes: 'Liberal arts pioneer' },
-    { name: 'Krea University', code: 'KREA', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://krea.edu.in', stagingUrl: 'https://staging.krea.edu.in', location: 'Sri City, AP', notes: 'Interwoven arts and science' },
-    { name: 'O.P. Jindal Global University', code: 'OPJINDAL', type: 'MULTI_TENANT', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://jgu.edu.in', stagingUrl: 'https://staging.jgu.edu.in', location: 'Sonipat, HR', notes: 'Global law & governance' },
-    { name: 'Bennett University', code: 'BENNETT', type: 'MULTI_TENANT', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://bennett.edu.in', stagingUrl: 'https://staging.bennett.edu.in', location: 'Greater Noida, UP', notes: 'Times Group initiative' },
-    { name: 'Plaksha University', code: 'PLAKSHA', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://plaksha.edu.in', stagingUrl: 'https://staging.plaksha.edu.in', location: 'Mohali, PB', notes: 'Next-generation tech institute' },
+    { name: 'Dr. D.Y. Patil Vidyapeeth', code: 'DYP', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://v2.dypatiledu.com/sign-in', location: 'Pune, MH', notes: '' },
+    { name: 'Atlas SkillTech University', code: 'ATLAS', type: 'MULTI_TENANT', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://v2.atlasonline.edu.in/sign-in', location: 'Mumbai, MH', notes: 'Microsites' },
+    { name: 'Online Atlas', code: 'ONLINEATLAS', type: 'MULTI_TENANT', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://www.onlineatlas.in/sign-in', location: 'Mumbai, MH', notes: 'Microsites' },
+    { name: 'Central University of Tamil Nadu', code: 'CUTN', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://www.cutnonline.in/sign-in', location: 'Thiruvarur, TN', notes: 'Different Pipelines' },
+    { name: 'Indian Institute of Management Bangalore', code: 'IIMB', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://online.iimbx.edu.in/sign-in', location: 'Bangalore, KA', notes: 'Different Pipelines' },
+    { name: 'Vels Institute of Science, Technology & Advanced Studies', code: 'VISTAS', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://www.vistasonlineedu.in/sign-in', location: 'Chennai, TN', notes: '' },
+    { name: 'Chandigarh University', code: 'CU', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://www.cuonlineedu.in/admin', location: 'Mohali, PB', notes: '' },
+    { name: 'Kurukshetra University', code: 'KUK', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: '', location: 'Kurukshetra, HR', notes: '' },
+    { name: 'Bharathidasan University', code: 'BDU', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: '', location: 'Tiruchirappalli, TN', notes: '' },
+    { name: 'YourDegree', code: 'YD', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://cms-infinity.yourdegree.com', location: 'Delhi, DL', notes: '' },
+    { name: 'Alliance University', code: 'ALLIANCE', type: 'MULTI_TENANT', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://www.onlinealliance.in/sign-in', location: 'Bangalore, KA', notes: 'Microsites' },
+    { name: 'IIT Kharagpur - v2', code: 'IITKGP-V2', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://v2.online.iitkgp.ac.in/', location: 'Kharagpur, WB', notes: '' },
+    { name: 'IIT Kharagpur - v1 (v1 KGP)', code: 'V1-KGP', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://online.iitkgp.ac.in/', location: 'Kharagpur, WB', notes: 'Different Pipelines' },
+    { name: 'O.P. Jindal Global University', code: 'OPJ', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: '', location: 'Sonipat, HR', notes: 'Different Pipelines' },
+    { name: 'Periyar Maniammai Institute of Science & Technology', code: 'PSBDEU', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: '', location: 'Thanjavur, TN', notes: 'Different Pipelines' },
+    { name: 'upGrad Rise', code: 'UPGRADRISE', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://www.upgradrise.com/', location: 'Mumbai, MH', notes: 'Different Pipelines' },
+    { name: 'Andhra University', code: 'ANDHRA', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: '', location: 'Visakhapatnam, AP', notes: '' },
+    { name: 'Sri Venkateswara University', code: 'SVU', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: '', location: 'Tirupati, AP', notes: '' },
+    { name: 'Gradr', code: 'GRADR', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: '', location: 'India', notes: '' },
   ];
 
   const universities = await University.create(universityData);
@@ -115,10 +116,10 @@ export const seedDatabase = async () => {
   const featMap = new Map<string, any>();
   features.forEach((f) => featMap.set(f.code, f));
 
-  // 4. Create Key Reference Releases (Matching screenshot exactly)
+  // 4. Create Key Reference Releases
   const keyReleases = [
     {
-      uniCode: 'IITKGP',
+      uniCode: 'IITKGP-V2',
       featCode: 'NEW_LEAD_FORM',
       title: 'New Lead Form',
       description: 'Production deployment of high-converting multi-step lead capture form for 2026-27 batch.',
@@ -192,6 +193,8 @@ export const seedDatabase = async () => {
   for (const item of keyReleases) {
     const uni = uniMap.get(item.uniCode);
     const feat = featMap.get(item.featCode);
+
+    if (!uni || !feat) continue;
 
     const rel = await Release.create({
       university: uni._id,
@@ -270,31 +273,18 @@ export const seedDatabase = async () => {
     await rel.save();
   }
 
-  // 5. Build the matrix accurately according to UI screenshot:
-  // Matrix in screenshot:
-  // Feature             IITKGP  Atlas  BDU  CU  DYP
-  // New Lead Form         ✓      ✓      ✓   ✓   ✓
-  // LSQ Integration       ✓      ✓      ✓   ✗   ✓
-  // Hero Banner           ✗      ✓      ✓   ✓   ✓
-  // Instrumentation       ✓      ✓      ✓   ✗   ✓
-  // Fee Module            ✓      ✓      ✓   ✓   ✓
+  // 5. Build matrix deployments
   const matrixDeployments = [
-    // New Lead Form: live on all 5
-    { feat: 'NEW_LEAD_FORM', unis: ['IITKGP', 'ATLAS', 'BDU', 'CU', 'DYP'], type: 'FEATURE' },
-    // LSQ Integration: live on IITKGP, ATLAS, BDU, DYP (not CU)
-    { feat: 'LSQ_INTEGRATION', unis: ['IITKGP', 'ATLAS', 'BDU', 'DYP'], type: 'FEATURE' },
-    // Hero Banner: live on ATLAS, BDU, CU, DYP (not IITKGP)
-    { feat: 'HERO_BANNER', unis: ['ATLAS', 'BDU', 'CU', 'DYP'], type: 'FEATURE' },
-    // Instrumentation: live on IITKGP, ATLAS, BDU, DYP (not CU)
-    { feat: 'INSTRUMENTATION_EVENTS', unis: ['IITKGP', 'ATLAS', 'BDU', 'DYP'], type: 'FEATURE' },
-    // Fee Module: live on all 5
-    { feat: 'FEE_PAYMENT_MODULE', unis: ['IITKGP', 'ATLAS', 'BDU', 'CU', 'DYP'], type: 'FEATURE' },
-    // Other features
-    { feat: 'UTM_TRACKING', unis: ['IITKGP', 'ATLAS', 'BITS', 'VIT', 'SRM'], type: 'FEATURE' },
-    { feat: 'OTP_VERIFICATION_FLOW', unis: ['IITKGP', 'MANIPAL', 'AMITY', 'THAPAR', 'SYMBIOSIS'], type: 'FEATURE' },
-    { feat: 'PROGRAM_MAPPING', unis: ['ATLAS', 'BDU', 'BITS', 'NMIMS', 'ASHOKA'], type: 'FEATURE' },
-    { feat: 'DOCUMENT_UPLOAD_ENGINE', unis: ['IITKGP', 'VIT', 'DYP', 'KREA', 'BENNETT'], type: 'FEATURE' },
-    { feat: 'SSO_AUTHENTICATION', unis: ['IITKGP', 'BITS', 'THAPAR', 'OPJINDAL', 'PLAKSHA'], type: 'FEATURE' },
+    { feat: 'NEW_LEAD_FORM', unis: ['IITKGP-V2', 'ATLAS', 'BDU', 'CU', 'DYP', 'CUTN', 'IIMB', 'VISTAS'], type: 'FEATURE' },
+    { feat: 'LSQ_INTEGRATION', unis: ['IITKGP-V2', 'ATLAS', 'BDU', 'DYP', 'YD', 'ALLIANCE'], type: 'FEATURE' },
+    { feat: 'HERO_BANNER', unis: ['ATLAS', 'BDU', 'CU', 'DYP', 'V1-KGP', 'ONLINEATLAS'], type: 'FEATURE' },
+    { feat: 'INSTRUMENTATION_EVENTS', unis: ['IITKGP-V2', 'ATLAS', 'BDU', 'DYP', 'UPGRADRISE', 'CUTN'], type: 'FEATURE' },
+    { feat: 'FEE_PAYMENT_MODULE', unis: ['IITKGP-V2', 'ATLAS', 'BDU', 'CU', 'DYP', 'IIMB', 'VISTAS'], type: 'FEATURE' },
+    { feat: 'UTM_TRACKING', unis: ['IITKGP-V2', 'ATLAS', 'ALLIANCE', 'CUTN', 'IIMB'], type: 'FEATURE' },
+    { feat: 'OTP_VERIFICATION_FLOW', unis: ['IITKGP-V2', 'ONLINEATLAS', 'YD', 'PSBDEU', 'UPGRADRISE'], type: 'FEATURE' },
+    { feat: 'PROGRAM_MAPPING', unis: ['ATLAS', 'BDU', 'OPJ', 'ANDHRA', 'SVU'], type: 'FEATURE' },
+    { feat: 'DOCUMENT_UPLOAD_ENGINE', unis: ['IITKGP-V2', 'DYP', 'CUTN', 'GRADR', 'VISTAS'], type: 'FEATURE' },
+    { feat: 'SSO_AUTHENTICATION', unis: ['IITKGP-V2', 'IIMB', 'OPJ', 'PSBDEU', 'UPGRADRISE'], type: 'FEATURE' },
   ];
 
   for (const m of matrixDeployments) {

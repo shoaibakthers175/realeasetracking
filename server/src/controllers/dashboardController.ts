@@ -63,23 +63,3 @@ export const getDashboardData = async (req: Request, res: Response, next: NextFu
     next(error);
   }
 };
-
-export const cleanDemoDataController = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { cleanDemoData } = await import('../seed/clean');
-    const result = await cleanDemoData();
-    return sendSuccess(res, result, 'All demo operational records cleaned successfully');
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const resetDemoDataController = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { seedDatabase } = await import('../seed/seed');
-    await seedDatabase();
-    return sendSuccess(res, null, 'Demo database re-seeded successfully');
-  } catch (error) {
-    next(error);
-  }
-};
