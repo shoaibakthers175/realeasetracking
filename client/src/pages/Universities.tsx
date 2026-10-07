@@ -5,6 +5,7 @@ import { University, UniversityType, Environment } from '../types';
 import { Badge } from '../components/common/Badge';
 import { Button } from '../components/common/Button';
 import { Modal } from '../components/common/Modal';
+import { DeleteUniversityModal } from '../components/common/DeleteUniversityModal';
 import { Skeleton } from '../components/common/Skeleton';
 import { useNotification } from '../context/NotificationContext';
 import { useAuth } from '../context/AuthContext';
@@ -17,6 +18,7 @@ import {
   Filter,
   Globe,
   SlidersHorizontal,
+  Trash2,
 } from 'lucide-react';
 
 export const Universities: React.FC = () => {
@@ -26,6 +28,8 @@ export const Universities: React.FC = () => {
   const [typeFilter, setTypeFilter] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedUniForDelete, setSelectedUniForDelete] = useState<University | null>(null);
 
   // Add University Form state
   const [formData, setFormData] = useState({
@@ -195,9 +199,30 @@ export const Universities: React.FC = () => {
                       <p className="text-xs text-slate-500 dark:text-dark-muted line-clamp-1">{uni.name}</p>
                     </div>
                   </div>
-                  <Badge variant={uni.type === 'STANDALONE' ? 'standalone' : 'multitenant'} size="xs">
-                    {uni.type === 'STANDALONE' ? 'Standalone' : 'Multi-Tenant'}
-                  </Badge>
+                  <div className="flex items-center gap-1.5">
+                    <Badge variant={uni.type === 'STANDALONE' ? 'standalone' : 'multitenant'} size="xs">
+                      {uni.type === 'STANDALONE' ? 'Standalone' : 'Multi-Tenant'}
+                    </Badge>
+                    {uni.status === 'INACTIVE' && (
+                      <Badge variant="failed" size="xs">
+                        Inactive
+                      </Badge>
+                    )}
+                    {user?.role === 'ADMIN' && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedUniForDelete(uni);
+                          setIsDeleteModalOpen(true);
+                        }}
+                        title={`Delete or Deactivate ${uni.code}`}
+                        className="p-1.5 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
@@ -365,6 +390,17 @@ export const Universities: React.FC = () => {
           </div>
         </form>
       </Modal>
+
+      {/* Delete / Deactivate University Confirmation Modal */}
+      <DeleteUniversityModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setSelectedUniForDelete(null);
+        }}
+        university={selectedUniForDelete}
+        onDeleted={fetchUniversities}
+      />
     </div>
   );
 };

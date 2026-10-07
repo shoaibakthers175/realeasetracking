@@ -5,7 +5,9 @@ import { University, Release, BugTicket, SanityReport, Lead } from '../types';
 import { Badge } from '../components/common/Badge';
 import { Button } from '../components/common/Button';
 import { Skeleton } from '../components/common/Skeleton';
+import { DeleteUniversityModal } from '../components/common/DeleteUniversityModal';
 import { useNotification } from '../context/NotificationContext';
+import { useAuth } from '../context/AuthContext';
 import {
   Building2,
   Globe,
@@ -20,6 +22,7 @@ import {
   XCircle,
   Calendar,
   Clock,
+  Trash2,
 } from 'lucide-react';
 
 export const UniversityDetail: React.FC = () => {
@@ -35,8 +38,10 @@ export const UniversityDetail: React.FC = () => {
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'features' | 'releases' | 'bugs' | 'sanity' | 'leads'>('overview');
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const { showToast } = useNotification();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -139,6 +144,17 @@ export const UniversityDetail: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
+          {user?.role === 'ADMIN' && (
+            <Button
+              onClick={() => setIsDeleteModalOpen(true)}
+              variant="outline"
+              size="sm"
+              className="text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-900/50 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+              leftIcon={<Trash2 className="w-4 h-4" />}
+            >
+              Delete University
+            </Button>
+          )}
           <Button
             onClick={() => navigate(`/releases?university=${university.code}`)}
             variant="primary"
@@ -484,6 +500,13 @@ export const UniversityDetail: React.FC = () => {
           </div>
         </div>
       )}
+      {/* Delete / Deactivate University Confirmation Modal */}
+      <DeleteUniversityModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        university={university}
+        onDeleted={() => navigate('/universities')}
+      />
     </div>
   );
 };

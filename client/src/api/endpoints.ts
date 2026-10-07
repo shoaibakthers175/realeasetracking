@@ -97,8 +97,8 @@ export const universitiesApi = {
     const res = await apiClient.patch<ApiResponse<University>>(`/universities/${id}`, data);
     return res.data;
   },
-  delete: async (id: string) => {
-    const res = await apiClient.delete<ApiResponse<null>>(`/universities/${id}`);
+  delete: async (id: string, cascade: boolean = false) => {
+    const res = await apiClient.delete<ApiResponse<any>>(`/universities/${id}${cascade ? '?cascade=true' : ''}`);
     return res.data;
   },
 };

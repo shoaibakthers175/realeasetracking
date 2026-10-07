@@ -163,4 +163,31 @@ describe('ReleaseTrack Backend API Test Suite', () => {
     const rolledBackFeature = updatedMatrix.body.data.features.find((f: any) => f.featureCode === 'NEW_LEAD_FORM');
     expect(rolledBackFeature.universities['IITKGP']).toBe(false);
   });
+
+  it('DELETE /api/universities/:id - should deactivate when releases exist without cascade', async () => {
+    const res = await request(app)
+      .delete(`/api/universities/${testUniId}`)
+      .set('Authorization', `Bearer ${authToken}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.deactivated).toBe(true);
+
+    const checkUni = await University.findById(testUniId);
+    expect(checkUni?.status).toBe('INACTIVE');
+  });
+
+  it('DELETE /api/universities/:id?cascade=true - should permanently delete university and linked data', async () => {
+    const res = await request(app)
+      .delete(`/api/universities/${testUniId}?cascade=true`)
+      .set('Authorization', `Bearer ${authToken}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.deleted).toBe(true);
+
+    const checkUni = await University.findById(testUniId);
+    expect(checkUni).toBeNull();
+
+    const checkReleases = await Release.find({ university: testUniId });
+    expect(checkReleases.length).toBe(0);
+  });
 });

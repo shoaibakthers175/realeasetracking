@@ -279,15 +279,22 @@ export const updateUniversity = async (req: Request, res: Response, next: NextFu
 export const deleteUniversity = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
+    const { cascade, force, action } = req.query;
     const university = await University.findById(id);
     if (!university) {
       return sendError(res, 'University not found', 404, 'NOT_FOUND');
     }
 
-    // Check if releases exist
+    const isCascade = cascade === 'true' || force === 'true' || action === 'cascade';
+    const isDeactivateOnly = action === 'deactivate';
+
     const releasesCount = await Release.countDocuments({ university: id });
-    if (releasesCount > 0) {
-      // Soft-delete by setting INACTIVE
+    const bugsCount = await BugTicket.countDocuments({ university: id });
+    const sanityCount = await SanityReport.countDocuments({ university: id });
+    const leadsCount = await Lead.countDocuments({ university: id });
+
+    // If explicit deactivation is requested or if releases exist without cascade flag
+    if (isDeactivateOnly || (releasesCount > 0 && !isCascade)) {
       university.status = 'INACTIVE';
       await university.save();
       await logAudit({
@@ -297,9 +304,26 @@ export const deleteUniversity = async (req: Request, res: Response, next: NextFu
         entityTitle: `${university.code} - ${university.name}`,
         details: `Deactivated university ${university.code} (${releasesCount} linked releases retained)`,
         req,
+        notify: {
+          title: 'University Deactivated',
+          message: `${university.name} (${university.code}) status set to INACTIVE.`,
+          type: 'SYSTEM',
+        },
       });
-      return sendSuccess(res, university, 'University marked as INACTIVE because it has active release history.');
+      return sendSuccess(
+        res,
+        { deactivated: true, university },
+        `University marked as INACTIVE because it has ${releasesCount} linked release(s). Pass cascade=true to delete permanently.`
+      );
     }
+
+    // Permanent delete with cascading cleanup
+    await Promise.all([
+      Release.deleteMany({ university: id }),
+      BugTicket.deleteMany({ university: id }),
+      SanityReport.deleteMany({ university: id }),
+      Lead.deleteMany({ university: id }),
+    ]);
 
     await University.findByIdAndDelete(id);
     await logAudit({
@@ -307,11 +331,22 @@ export const deleteUniversity = async (req: Request, res: Response, next: NextFu
       entityType: 'University',
       entityId: id,
       entityTitle: `${university.code} - ${university.name}`,
-      details: `Deleted university ${university.code}`,
+      details: isCascade
+        ? `Permanently deleted university ${university.code} and removed ${releasesCount} releases, ${bugsCount} bug tickets, ${sanityCount} sanity reports, ${leadsCount} leads`
+        : `Permanently deleted university ${university.code}`,
       req,
+      notify: {
+        title: 'University Deleted',
+        message: `${university.name} (${university.code}) was permanently deleted by Admin.`,
+        type: 'SYSTEM',
+      },
     });
 
-    return sendSuccess(res, null, 'University deleted successfully');
+    return sendSuccess(
+      res,
+      { deleted: true, purgedCounts: { releases: releasesCount, bugs: bugsCount, sanity: sanityCount, leads: leadsCount } },
+      'University and linked records deleted successfully'
+    );
   } catch (error) {
     next(error);
   }

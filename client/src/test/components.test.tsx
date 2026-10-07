@@ -8,6 +8,9 @@ import { KpiCard } from '../components/dashboard/KpiCard';
 import { Building2 } from 'lucide-react';
 import { FeaturesMatrixCard } from '../components/dashboard/FeaturesMatrixCard';
 import { DateFilter } from '../components/common/DateFilter';
+import { NotificationProvider } from '../context/NotificationContext';
+import { DeleteUniversityModal } from '../components/common/DeleteUniversityModal';
+import { University } from '../types';
 
 describe('ReleaseTrack React Component Test Suite', () => {
   it('renders Badge with variants correctly', () => {
@@ -78,5 +81,33 @@ describe('ReleaseTrack React Component Test Suite', () => {
     expect(screen.getByText('New Lead Form')).toBeInTheDocument();
     expect(screen.getByText('IITKGP')).toBeInTheDocument();
     expect(screen.getByText('ATLAS')).toBeInTheDocument();
+  });
+
+  it('renders DeleteUniversityModal with deactivation and cascade purge options', () => {
+    const mockUni: University = {
+      _id: 'uni123',
+      name: 'Indian Institute of Technology Kharagpur',
+      code: 'IITKGP',
+      type: 'STANDALONE',
+      primaryEnvironment: 'PRODUCTION',
+      status: 'ACTIVE',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    render(
+      <NotificationProvider>
+        <DeleteUniversityModal
+          isOpen={true}
+          onClose={() => {}}
+          university={mockUni}
+          onDeleted={() => {}}
+        />
+      </NotificationProvider>
+    );
+
+    expect(screen.getByText('Delete / Manage University')).toBeInTheDocument();
+    expect(screen.getByText('Deactivate University (Soft Delete - Recommended)')).toBeInTheDocument();
+    expect(screen.getByText('Permanently Delete All Data (Force Purge)')).toBeInTheDocument();
   });
 });
