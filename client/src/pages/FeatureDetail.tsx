@@ -5,7 +5,9 @@ import { Feature, Release } from '../types';
 import { Badge } from '../components/common/Badge';
 import { Button } from '../components/common/Button';
 import { Skeleton } from '../components/common/Skeleton';
+import { DeleteFeatureModal } from '../components/common/DeleteFeatureModal';
 import { useNotification } from '../context/NotificationContext';
+import { useAuth } from '../context/AuthContext';
 import {
   Layers,
   ArrowLeft,
@@ -15,6 +17,7 @@ import {
   Calendar,
   Clock,
   ExternalLink,
+  Trash2,
 } from 'lucide-react';
 
 export const FeatureDetail: React.FC = () => {
@@ -33,8 +36,10 @@ export const FeatureDetail: React.FC = () => {
     totalLiveUniversities: number;
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const { showToast } = useNotification();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -110,11 +115,25 @@ export const FeatureDetail: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-dark-card border border-slate-200 dark:border-dark-border">
-          <div>
-            <span className="text-[10px] text-slate-400 font-bold uppercase block">Currently Live On</span>
-            <div className="text-lg font-extrabold text-emerald-500">
-              {totalLiveUniversities} / {universityStatus.length} Universities
+        <div className="flex items-center gap-3">
+          {user?.role === 'ADMIN' && (
+            <Button
+              onClick={() => setIsDeleteModalOpen(true)}
+              variant="outline"
+              size="sm"
+              className="text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-900/50 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+              leftIcon={<Trash2 className="w-4 h-4" />}
+            >
+              Delete Feature
+            </Button>
+          )}
+
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-dark-card border border-slate-200 dark:border-dark-border">
+            <div>
+              <span className="text-[10px] text-slate-400 font-bold uppercase block">Currently Live On</span>
+              <div className="text-lg font-extrabold text-emerald-500">
+                {totalLiveUniversities} / {universityStatus.length} Universities
+              </div>
             </div>
           </div>
         </div>
@@ -230,6 +249,13 @@ export const FeatureDetail: React.FC = () => {
           </table>
         </div>
       </div>
+      {/* Delete / Deactivate Feature Confirmation Modal */}
+      <DeleteFeatureModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        feature={feature}
+        onDeleted={() => navigate('/features')}
+      />
     </div>
   );
 };

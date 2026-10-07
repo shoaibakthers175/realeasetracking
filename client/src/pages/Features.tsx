@@ -5,6 +5,7 @@ import { Feature, FeatureMatrixData, FeatureCategory } from '../types';
 import { Badge } from '../components/common/Badge';
 import { Button } from '../components/common/Button';
 import { Modal } from '../components/common/Modal';
+import { DeleteFeatureModal } from '../components/common/DeleteFeatureModal';
 import { Skeleton } from '../components/common/Skeleton';
 import { useNotification } from '../context/NotificationContext';
 import { useAuth } from '../context/AuthContext';
@@ -18,6 +19,7 @@ import {
   List,
   ChevronRight,
   Filter,
+  Trash2,
 } from 'lucide-react';
 
 export const Features: React.FC = () => {
@@ -28,6 +30,8 @@ export const Features: React.FC = () => {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedFeatureForDelete, setSelectedFeatureForDelete] = useState<Feature | null>(null);
 
   // Add Feature Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -300,9 +304,30 @@ export const Features: React.FC = () => {
                     <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-brand-primary transition-colors">
                       {feat.name}
                     </h3>
-                    <Badge variant="feature" size="xs">
-                      {feat.category}
-                    </Badge>
+                    <div className="flex items-center gap-1.5">
+                      <Badge variant="feature" size="xs">
+                        {feat.category}
+                      </Badge>
+                      {!feat.isActive && (
+                        <Badge variant="failed" size="xs">
+                          Inactive
+                        </Badge>
+                      )}
+                      {user?.role === 'ADMIN' && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedFeatureForDelete(feat);
+                            setIsDeleteModalOpen(true);
+                          }}
+                          title={`Delete or Deactivate ${feat.name}`}
+                          className="p-1.5 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
                   </div>
                   <span className="text-[11px] font-mono text-slate-400 block mt-0.5">
                     [{feat.code}]
@@ -407,6 +432,17 @@ export const Features: React.FC = () => {
           </div>
         </form>
       </Modal>
+
+      {/* Delete / Deactivate Feature Confirmation Modal */}
+      <DeleteFeatureModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setSelectedFeatureForDelete(null);
+        }}
+        feature={selectedFeatureForDelete}
+        onDeleted={fetchData}
+      />
     </div>
   );
 };

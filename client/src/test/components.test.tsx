@@ -10,7 +10,8 @@ import { FeaturesMatrixCard } from '../components/dashboard/FeaturesMatrixCard';
 import { DateFilter } from '../components/common/DateFilter';
 import { NotificationProvider } from '../context/NotificationContext';
 import { DeleteUniversityModal } from '../components/common/DeleteUniversityModal';
-import { University } from '../types';
+import { DeleteFeatureModal } from '../components/common/DeleteFeatureModal';
+import { University, Feature } from '../types';
 
 describe('ReleaseTrack React Component Test Suite', () => {
   it('renders Badge with variants correctly', () => {
@@ -108,6 +109,34 @@ describe('ReleaseTrack React Component Test Suite', () => {
 
     expect(screen.getByText('Delete / Manage University')).toBeInTheDocument();
     expect(screen.getByText('Deactivate University (Soft Delete - Recommended)')).toBeInTheDocument();
+    expect(screen.getByText('Permanently Delete All Data (Force Purge)')).toBeInTheDocument();
+  });
+
+  it('renders DeleteFeatureModal with deactivation and cascade purge options', () => {
+    const mockFeature: Feature = {
+      _id: 'feat123',
+      name: 'New Lead Form',
+      code: 'NEW_LEAD_FORM',
+      category: 'LEAD_MANAGEMENT',
+      description: 'Multi-step lead form',
+      isActive: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    render(
+      <NotificationProvider>
+        <DeleteFeatureModal
+          isOpen={true}
+          onClose={() => {}}
+          feature={mockFeature}
+          onDeleted={() => {}}
+        />
+      </NotificationProvider>
+    );
+
+    expect(screen.getByText('Delete / Manage Feature')).toBeInTheDocument();
+    expect(screen.getByText('Deactivate Feature (Soft Delete - Recommended)')).toBeInTheDocument();
     expect(screen.getByText('Permanently Delete All Data (Force Purge)')).toBeInTheDocument();
   });
 });

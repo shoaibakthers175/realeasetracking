@@ -190,4 +190,52 @@ describe('ReleaseTrack Backend API Test Suite', () => {
     const checkReleases = await Release.find({ university: testUniId });
     expect(checkReleases.length).toBe(0);
   });
+
+  it('DELETE /api/features/:id - should deactivate feature when releases exist without cascade', async () => {
+    const feat = await Feature.create({
+      name: 'Analytics Dashboard',
+      code: 'ANALYTICS_DASH',
+      category: 'ANALYTICS',
+      isActive: true,
+    });
+
+    const uni = await University.create({
+      name: 'Test Uni',
+      code: 'TESTUNI',
+      type: 'STANDALONE',
+    });
+
+    await Release.create({
+      university: uni._id,
+      feature: feat._id,
+      title: 'Analytics Release',
+      releaseType: 'FEATURE',
+      environment: 'PRODUCTION',
+      releaseDate: new Date(),
+      releaseTime: '10:00 AM',
+      status: 'LIVE',
+      deployedBy: 'Shoaib Ahmed',
+    });
+
+    const res = await request(app)
+      .delete(`/api/features/${feat._id}`)
+      .set('Authorization', `Bearer ${authToken}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.deactivated).toBe(true);
+
+    const checkFeat = await Feature.findById(feat._id);
+    expect(checkFeat?.isActive).toBe(false);
+
+    // Now test cascade delete
+    const cascadeRes = await request(app)
+      .delete(`/api/features/${feat._id}?cascade=true`)
+      .set('Authorization', `Bearer ${authToken}`);
+
+    expect(cascadeRes.status).toBe(200);
+    expect(cascadeRes.body.data.deleted).toBe(true);
+
+    const checkDeleted = await Feature.findById(feat._id);
+    expect(checkDeleted).toBeNull();
+  });
 });

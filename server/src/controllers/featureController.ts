@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import { Feature } from '../models/Feature';
 import { Release } from '../models/Release';
 import { University } from '../models/University';
+import { BugTicket } from '../models/BugTicket';
+import { SanityReport } from '../models/SanityReport';
+import { Lead } from '../models/Lead';
 import { sendSuccess, sendError } from '../utils/response';
 import { getFeatureUniversityMatrix } from '../services/metricsService';
 import { logAudit } from '../services/auditService';
@@ -180,6 +183,84 @@ export const updateFeature = async (req: Request, res: Response, next: NextFunct
     });
 
     return sendSuccess(res, feature, 'Feature updated successfully');
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteFeature = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const { cascade, force, action } = req.query;
+    const feature = await Feature.findById(id);
+    if (!feature) {
+      return sendError(res, 'Feature not found', 404, 'NOT_FOUND');
+    }
+
+    const isCascade = cascade === 'true' || force === 'true' || action === 'cascade';
+    const isDeactivateOnly = action === 'deactivate';
+
+    const releasesCount = await Release.countDocuments({ feature: id });
+
+    // If explicit deactivation requested or if releases exist without cascade flag
+    if (isDeactivateOnly || (releasesCount > 0 && !isCascade)) {
+      feature.isActive = false;
+      await feature.save();
+      await logAudit({
+        event: 'UPDATE_FEATURE',
+        entityType: 'Feature',
+        entityId: feature._id,
+        entityTitle: `${feature.code} - ${feature.name}`,
+        details: `Deactivated feature ${feature.code} (${releasesCount} linked releases retained)`,
+        req,
+        notify: {
+          title: 'Feature Deactivated',
+          message: `${feature.name} (${feature.code}) status set to INACTIVE.`,
+          type: 'SYSTEM',
+        },
+      });
+      return sendSuccess(
+        res,
+        { deactivated: true, feature },
+        `Feature marked as INACTIVE because it has ${releasesCount} linked release(s). Pass cascade=true to delete permanently.`
+      );
+    }
+
+    // Permanent delete with cascading cleanup
+    if (isCascade && releasesCount > 0) {
+      const linkedReleases = await Release.find({ feature: id }).select('_id');
+      const releaseIds = linkedReleases.map((r) => r._id);
+
+      await Promise.all([
+        Release.deleteMany({ feature: id }),
+        BugTicket.deleteMany({ release: { $in: releaseIds } }),
+        SanityReport.deleteMany({ release: { $in: releaseIds } }),
+        Lead.deleteMany({ release: { $in: releaseIds } }),
+      ]);
+    }
+
+    await Feature.findByIdAndDelete(id);
+    await logAudit({
+      event: 'DELETE_FEATURE',
+      entityType: 'Feature',
+      entityId: id,
+      entityTitle: `${feature.code} - ${feature.name}`,
+      details: isCascade
+        ? `Permanently deleted feature ${feature.code} and removed ${releasesCount} linked releases`
+        : `Permanently deleted feature ${feature.code}`,
+      req,
+      notify: {
+        title: 'Feature Deleted',
+        message: `${feature.name} (${feature.code}) was permanently deleted by Admin.`,
+        type: 'SYSTEM',
+      },
+    });
+
+    return sendSuccess(
+      res,
+      { deleted: true, purgedCounts: { releases: releasesCount } },
+      'Feature and linked records deleted successfully'
+    );
   } catch (error) {
     next(error);
   }

@@ -121,6 +121,10 @@ export const featuresApi = {
     const res = await apiClient.patch<ApiResponse<Feature>>(`/features/${id}`, data);
     return res.data;
   },
+  delete: async (id: string, cascade: boolean = false) => {
+    const res = await apiClient.delete<ApiResponse<any>>(`/features/${id}${cascade ? '?cascade=true' : ''}`);
+    return res.data;
+  },
 };
 
 export const releasesApi = {

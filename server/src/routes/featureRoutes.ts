@@ -5,9 +5,10 @@ import {
   getFeatureById,
   createFeature,
   updateFeature,
+  deleteFeature,
 } from '../controllers/featureController';
 import { authenticate } from '../middleware/auth';
-import { canModifyReleases } from '../middleware/rbac';
+import { canModifyReleases, canAdministerSystem } from '../middleware/rbac';
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.get('/matrix', authenticate, getMatrix);
 router.get('/:id', authenticate, getFeatureById);
 router.post('/', authenticate, canModifyReleases, createFeature);
 router.patch('/:id', authenticate, canModifyReleases, updateFeature);
+router.delete('/:id', authenticate, canAdministerSystem, deleteFeature);
 
 export default router;
