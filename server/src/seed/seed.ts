@@ -12,6 +12,97 @@ import {
   Notification,
 } from '../models';
 
+export const seedInitialSystemData = async () => {
+  console.log('[Seed] Ensuring essential system data (Users, Universities, Features) exists...');
+
+  // 1. Ensure Users exist
+  const userCount = await User.countDocuments();
+  if (userCount === 0) {
+    await User.create([
+      {
+        name: 'Shoaib Ahmed',
+        email: 'shoaib@releasetrack.com',
+        password: 'Password123!',
+        role: 'QA_ENGINEER',
+        department: 'QA Automation & Releases',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+      },
+      {
+        name: 'Priya Sharma',
+        email: 'priya@releasetrack.com',
+        password: 'Password123!',
+        role: 'QA_LEAD',
+        department: 'Quality Assurance',
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
+      },
+      {
+        name: 'DevOps Admin',
+        email: 'admin@releasetrack.com',
+        password: 'Password123!',
+        role: 'ADMIN',
+        department: 'Engineering Operations',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+      },
+      {
+        name: 'Alex Mercer',
+        email: 'alex@releasetrack.com',
+        password: 'Password123!',
+        role: 'VIEWER',
+        department: 'Product Management',
+        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150',
+      },
+    ]);
+    console.log('[Seed] Created default user accounts.');
+  }
+
+  // 2. Ensure Universities exist
+  const uniCount = await University.countDocuments();
+  if (uniCount === 0) {
+    const universityData = [
+      { name: 'Dr. D.Y. Patil Vidyapeeth', code: 'DYP', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://v2.dypatiledu.com/sign-in', location: 'Pune, MH', notes: '' },
+      { name: 'Atlas SkillTech University', code: 'ATLAS', type: 'MULTI_TENANT', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://v2.atlasonline.edu.in/sign-in', location: 'Mumbai, MH', notes: 'Microsites' },
+      { name: 'Online Atlas', code: 'ONLINEATLAS', type: 'MULTI_TENANT', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://www.onlineatlas.in/sign-in', location: 'Mumbai, MH', notes: 'Microsites' },
+      { name: 'Central University of Tamil Nadu', code: 'CUTN', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://www.cutnonline.in/sign-in', location: 'Thiruvarur, TN', notes: 'Different Pipelines' },
+      { name: 'Indian Institute of Management Bangalore', code: 'IIMB', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://online.iimbx.edu.in/sign-in', location: 'Bangalore, KA', notes: 'Different Pipelines' },
+      { name: 'Vels Institute of Science, Technology & Advanced Studies', code: 'VISTAS', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://www.vistasonlineedu.in/sign-in', location: 'Chennai, TN', notes: '' },
+      { name: 'Chandigarh University', code: 'CU', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://www.cuonlineedu.in/admin', location: 'Mohali, PB', notes: '' },
+      { name: 'Kurukshetra University', code: 'KUK', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: '', location: 'Kurukshetra, HR', notes: '' },
+      { name: 'Bharathidasan University', code: 'BDU', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: '', location: 'Tiruchirappalli, TN', notes: '' },
+      { name: 'YourDegree', code: 'YD', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://cms-infinity.yourdegree.com', location: 'Delhi, DL', notes: '' },
+      { name: 'Alliance University', code: 'ALLIANCE', type: 'MULTI_TENANT', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://www.onlinealliance.in/sign-in', location: 'Bangalore, KA', notes: 'Microsites' },
+      { name: 'IIT Kharagpur - v2', code: 'IITKGP-V2', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://v2.online.iitkgp.ac.in/', location: 'Kharagpur, WB', notes: '' },
+      { name: 'IIT Kharagpur - v1 (v1 KGP)', code: 'V1-KGP', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://online.iitkgp.ac.in/', location: 'Kharagpur, WB', notes: 'Different Pipelines' },
+      { name: 'O.P. Jindal Global University', code: 'OPJ', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: '', location: 'Sonipat, HR', notes: 'Different Pipelines' },
+      { name: 'Periyar Maniammai Institute of Science & Technology', code: 'PSBDEU', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: '', location: 'Thanjavur, TN', notes: 'Different Pipelines' },
+      { name: 'upGrad Rise', code: 'UPGRADRISE', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: 'https://www.upgradrise.com/', location: 'Mumbai, MH', notes: 'Different Pipelines' },
+      { name: 'Andhra University', code: 'ANDHRA', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: '', location: 'Visakhapatnam, AP', notes: '' },
+      { name: 'Sri Venkateswara University', code: 'SVU', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: '', location: 'Tirupati, AP', notes: '' },
+      { name: 'Gradr', code: 'GRADR', type: 'STANDALONE', primaryEnvironment: 'PRODUCTION', productionUrl: '', location: 'India', notes: '' },
+    ];
+    await University.create(universityData);
+    console.log(`[Seed] Seeded ${universityData.length} universities.`);
+  }
+
+  // 3. Ensure Features exist
+  const featCount = await Feature.countDocuments();
+  if (featCount === 0) {
+    const featureData = [
+      { name: 'New Lead Form', code: 'NEW_LEAD_FORM', category: 'LEAD_MANAGEMENT', description: 'Next-gen responsive multi-step lead capture form with instant validation' },
+      { name: 'LSQ Integration', code: 'LSQ_INTEGRATION', category: 'INTEGRATION', description: 'Bi-directional real-time LeadSquared CRM synchronization' },
+      { name: 'Hero Banner', code: 'HERO_BANNER', category: 'CORE', description: 'Dynamic customizable hero promotional banner with A/B testing' },
+      { name: 'Instrumentation', code: 'INSTRUMENTATION_EVENTS', category: 'ANALYTICS', description: 'Telemetry and user action clickstream instrumentation tracking' },
+      { name: 'Fee Module', code: 'FEE_PAYMENT_MODULE', category: 'PAYMENTS', description: 'Razorpay & PayU multi-gateway fee collection and installment engine' },
+      { name: 'UTM Tracking', code: 'UTM_TRACKING', category: 'LEAD_MANAGEMENT', description: 'First-touch, last-touch, and multi-touch campaign attribution engine' },
+      { name: 'OTP Flow', code: 'OTP_VERIFICATION_FLOW', category: 'ADMISSION', description: 'WhatsApp & SMS powered instant applicant phone verification' },
+      { name: 'Program Mapping', code: 'PROGRAM_MAPPING', category: 'ADMISSION', description: 'Multi-discipline course eligibility criteria and department mapping' },
+      { name: 'Document Upload Engine', code: 'DOCUMENT_UPLOAD_ENGINE', category: 'ADMISSION', description: 'S3-backed applicant scorecard and transcript verification OCR' },
+      { name: 'Single Sign-On SSO', code: 'SSO_AUTHENTICATION', category: 'CORE', description: 'SAML2 and Google Workspace single sign-on integration' },
+    ];
+    await Feature.create(featureData);
+    console.log(`[Seed] Seeded ${featureData.length} features.`);
+  }
+};
+
 export const seedDatabase = async () => {
   console.log('[Seed] Starting database seed...');
 

@@ -1,7 +1,7 @@
 import { createApp } from './app';
 import { connectDB } from './config/db';
 import { config } from './config/env';
-import { seedDatabase } from './seed/seed';
+import { seedInitialSystemData } from './seed/seed';
 import { University } from './models/University';
 
 const startServer = async () => {
@@ -9,11 +9,11 @@ const startServer = async () => {
     // 1. Connect to Database
     await connectDB();
 
-    // 2. Check if seeding is required (if universities count is 0)
+    // 2. Check if universities exist, initialize base system records if needed
     const uniCount = await University.countDocuments();
     if (uniCount === 0) {
-      console.log('[Server] Database is empty. Running initial seed...');
-      await seedDatabase();
+      console.log('[Server] Database is empty. Initializing universities and base records...');
+      await seedInitialSystemData();
     }
 
     // 3. Start Express Server
